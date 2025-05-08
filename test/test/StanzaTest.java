@@ -41,7 +41,7 @@ public class StanzaTest {
             stanza.addAttrezzo(oggetto);
         }
     }
-
+    
     @Test
     public void testRemoveAttrezzo() {
         Attrezzo lanterna = new Attrezzo("Lanterna", 1);
