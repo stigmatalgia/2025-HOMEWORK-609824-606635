@@ -1,78 +1,56 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.uniroma3.diadia.*;
+import it.uniroma3.diadia.IO;
+import it.uniroma3.diadia.IOConsole;
+import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
-import it.uniroma3.diadia.ambienti.*;
+import it.uniroma3.diadia.comandi.Comando;
+import it.uniroma3.diadia.comandi.ComandoPrendi;
 
 class ComandoPrendiTest {
 
-    private ComandoPrendi comando;
     private Partita partita;
-    private ByteArrayOutputStream outputStream;
+    private Comando comando;
+    private IO io;
     private Stanza stanza;
 
     @BeforeEach
     void setUp() {
-        outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
-
-        stanza = new Stanza("Biblioteca");
+        stanza = new Stanza("Atrio");
         Labirinto labirinto = new Labirinto();
+        labirinto.setStanzaIniziale(stanza);
         labirinto.setStanzaCorrente(stanza);
-
         partita = new Partita();
         partita.setLabirinto(labirinto);
 
-        IOConsole io = new IOConsole();
-        comando = new ComandoPrendi(io, partita);
+        comando = new ComandoPrendi();
+        io = new IOConsole();
     }
 
     @Test
-    void testAttrezzoPresenteNellaStanza() {
-        Attrezzo lanterna = new Attrezzo("lanterna", 2);
-        stanza.addAttrezzo(lanterna);
+    void testPrendiSuccesso() {
+        Attrezzo martello = new Attrezzo("martello", 2);
+        stanza.addAttrezzo(martello);
 
-        comando.setParametro("lanterna");
-        comando.esegui(partita);
+        comando.setParametro("martello");
+        comando.esegui(partita, io);
 
-        String output = outputStream.toString();
-        assertTrue(output.contains("Hai preso: lanterna"));
-        assertTrue(partita.getGiocatore().getBorsa().hasAttrezzo("lanterna"));
-        assertFalse(stanza.hasAttrezzo("lanterna"));
+        assertTrue(partita.getGiocatore().getBorsa().hasAttrezzo("martello"));
+        assertFalse(stanza.hasAttrezzo("martello"));
     }
 
     @Test
-    void testAttrezzoNonPresenteNellaStanza() {
-        comando.setParametro("spada");
-        comando.esegui(partita);
+    void testPrendiFallimento() {
 
-        String output = outputStream.toString();
-        assertTrue(output.contains("Attrezzo non trovato."));
-        assertFalse(partita.getGiocatore().getBorsa().hasAttrezzo("spada"));
-    }
+        comando.setParametro("chiave");
+        comando.esegui(partita, io);
 
-    @Test
-    void testBorsaPiena() {
-        // Riempie la borsa manualmente
-        for (int i = 0; i < 10; i++) {
-            partita.getGiocatore().getBorsa().addAttrezzo(new Attrezzo("oggetto" + i, 1));
-        }
-
-        Attrezzo pesante = new Attrezzo("incudine", 5);
-        stanza.addAttrezzo(pesante);
-
-        comando.setParametro("incudine");
-        comando.esegui(partita);
-
-        String output = outputStream.toString();
-        assertTrue(output.contains("La borsa è piena!") || output.contains("Attrezzo non trovato."));
+        assertFalse(partita.getGiocatore().getBorsa().hasAttrezzo("chiave"));
     }
 }

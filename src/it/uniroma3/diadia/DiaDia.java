@@ -1,5 +1,8 @@
 package it.uniroma3.diadia;
 
+import it.uniroma3.diadia.comandi.Comando;
+import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
+
 /**
  * Classe principale di diadia, un semplice gioco di ruolo ambientato al dia.0.0..0 
  * Per giocare crea un'istanza di questa classe e invoca il letodo gioca
@@ -25,9 +28,9 @@ public class DiaDia {
 			"Per conoscere le istruzioni usa il comando 'aiuto'.";
 
 	private Partita partita;
-	private IOConsole IO;
-
-	public DiaDia(IOConsole IO) {
+	private IO IO;
+ 
+	public DiaDia(IO IO) {
 		this.IO = IO; 
 		this.partita = new Partita();
 	}
@@ -38,8 +41,11 @@ public class DiaDia {
 		do		
 			istruzione = IO.leggiRiga();
 		while (!processaIstruzione(istruzione));
-	}   
+	} 
 
+	public Partita getPartita() {
+		return this.partita;
+	}
 
 	/**
 	 * Processa una istruzione 
@@ -52,7 +58,7 @@ public class DiaDia {
 		FabbricaDiComandiFisarmonica factory = new FabbricaDiComandiFisarmonica(IO, partita);
 
 		comandoDaEseguire = factory.costruisciComando(istruzione);
-		comandoDaEseguire.esegui(this.partita);
+		comandoDaEseguire.esegui(this.partita,IO);
 		if(this.partita.vinta())
 			IO.mostraMessaggio("Hai vinto!");
 		if(this.partita.getGiocatore().getCfu() <= 0)
@@ -61,7 +67,7 @@ public class DiaDia {
 	}
 
 	public static void main(String[] argc) {
-		IOConsole io = new IOConsole();
+		IO io = new IOConsole();
 		DiaDia gioco = new DiaDia(io);
 		gioco.gioca();
 	}

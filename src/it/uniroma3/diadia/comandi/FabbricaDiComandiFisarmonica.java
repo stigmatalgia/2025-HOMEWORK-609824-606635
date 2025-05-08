@@ -1,12 +1,15 @@
-package it.uniroma3.diadia;
+package it.uniroma3.diadia.comandi;
 
 import java.util.Scanner;
 
+import it.uniroma3.diadia.IO;
+import it.uniroma3.diadia.Partita;
+
 public class FabbricaDiComandiFisarmonica implements FabbricaDiComandi{
-	private IOConsole IO;
+	private IO IO;
 	private Partita partita;
 
-	public FabbricaDiComandiFisarmonica(IOConsole IO, Partita partita) {
+	public FabbricaDiComandiFisarmonica(IO IO, Partita partita) {
 		this.IO = IO;
 		this.partita = partita;
 	}
@@ -22,20 +25,20 @@ public class FabbricaDiComandiFisarmonica implements FabbricaDiComandi{
 		if (scannerDiParole.hasNext())
 			parametro = scannerDiParole.next(); // seconda parola: eventuale parametro
 		if (nomeComando == null)
-			comando = new ComandoNonValido(IO, null);
+			comando = new ComandoNonValido();
 		else if (nomeComando.equals("vai"))
-			comando = new ComandoVai(IO, partita);
+			comando = new ComandoVai();
 		else if (nomeComando.equals("prendi"))
-			comando = new ComandoPrendi(IO, partita);
+			comando = new ComandoPrendi();
 		else if (nomeComando.equals("posa"))
-			comando = new ComandoPosa(IO, partita);
+			comando = new ComandoPosa();
 		else if (nomeComando.equals("aiuto"))
-			comando = new ComandoAiuto(IO, null);
+			comando = new ComandoAiuto();
 		else if (nomeComando.equals("fine"))
-			comando = new ComandoFine(IO, null);
+			comando = new ComandoFine();
 		else if (nomeComando.equals("guarda"))
-			comando = new ComandoGuarda(IO, partita);
-			else comando = new ComandoNonValido(IO, partita);
+			comando = new ComandoGuarda();
+		else comando = new ComandoNonValido();
 		comando.setParametro(parametro);
 		return comando;
 	}
