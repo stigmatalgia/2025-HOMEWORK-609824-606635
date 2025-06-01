@@ -8,6 +8,7 @@ import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.comandi.ComandoPosa;
@@ -21,13 +22,14 @@ class ComandoPosaTest {
 
     @BeforeEach
     void setUp() {
-        stanza = new Stanza("Aula");
-        Labirinto labirinto = new Labirinto();
-        labirinto.setStanzaIniziale(stanza);
-        labirinto.setStanzaCorrente(stanza);
 
-        partita = new Partita();
-        partita.setLabirinto(labirinto);
+        Labirinto labuilder = new LabirintoBuilder()
+				.addStanzaIniziale("LabCampusOne")
+				.addStanzaVincente("Biblioteca")
+				.addAdiacenza("LabCampusOne", "Biblioteca", "ovest")
+				.getLabirinto(); 
+        stanza = labuilder.getStanzaIniziale();
+		partita = new Partita(labuilder);
 
         io = new IOConsole();
         comando = new ComandoPosa();

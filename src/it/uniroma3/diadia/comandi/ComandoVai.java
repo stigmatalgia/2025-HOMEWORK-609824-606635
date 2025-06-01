@@ -4,7 +4,7 @@ import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Stanza;
 
-public class ComandoVai implements Comando{
+public class ComandoVai extends AbstractComando implements Comando{
 	private String direzione;
 	
 	public ComandoVai() {
@@ -17,19 +17,21 @@ public class ComandoVai implements Comando{
 	
 	@Override
 	public void esegui(Partita partita, IO IO) {
-		if(direzione==null) 
+		if(direzione==null) {
 			IO.mostraMessaggio("Dove vuoi andare ?");
+			return;
+		}
 		Stanza prossimaStanza = null;
 		prossimaStanza = partita.getLabirinto().getStanzaCorrente().getStanzaAdiacente(direzione);
 		if (prossimaStanza == null)
-			IO.mostraMessaggio("Direzione inesistente");
+			IO.mostraMessaggio("Direzione non valida");
 		else {
 			partita.getLabirinto().setStanzaCorrente(prossimaStanza);
 			int cfu = partita.getGiocatore().getCfu();
 			partita.getGiocatore().setCfu(--cfu);
 			if((partita.getGiocatore().getCfu() <= 0) && (prossimaStanza != partita.getLabirinto().getStanzaVincente())){ partita.setFinita();}
+			IO.mostraMessaggio(partita.getLabirinto().getStanzaCorrente().getDescrizione());
 		}
-		IO.mostraMessaggio(partita.getLabirinto().getStanzaCorrente().getDescrizione());
 	}
 
 	@Override

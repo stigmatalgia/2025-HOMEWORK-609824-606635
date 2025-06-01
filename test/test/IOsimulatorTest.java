@@ -2,76 +2,92 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.uniroma3.diadia.DiaDia;
 import it.uniroma3.diadia.IOSimulator;
-import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 
 class IOsimulatorTest {
-	
-	@BeforeEach 
-	void SetUp() {
+    private Labirinto labirinto;
 
- 
-	}
-	
-	@Test
-	void testPartitaFinita() {
-		String []Comandi = {"fine"};
-		IOSimulator IO = new IOSimulator(Comandi);
-		DiaDia Test = new DiaDia(IO);
-		Test.gioca();
-		
-		String UltimoMessaggio = IO.getOutputStrings()[Comandi.length];
-		
-		assertEquals(UltimoMessaggio,"Grazie di aver giocato!");
-		assertTrue(Test.getPartita().isFinita());
-	}
-	
-	
-	@Test
-	void testPosaPrendiPartita() {
-		String []Comandi = {"prendi osso","vai sud", "prendi lanterna", "vai ovest", "posa lanterna", "posa osso"};
-		IOSimulator IO = new IOSimulator(Comandi);
-		DiaDia Test = new DiaDia(IO);
-		Test.gioca();
-		
-		assertTrue(Test.getPartita().getLabirinto().getStanzaCorrente().hasAttrezzo("osso"));
-		assertTrue(Test.getPartita().getLabirinto().getStanzaCorrente().hasAttrezzo("lanterna"));
-		assertEquals(Test.getPartita().getLabirinto().getStanzaCorrente().getNome(),"Laboratorio Campus");
-	}
-	
-	
-	@Test
-	void testPartitaVintaCercandoChiave() {
-		String []Comandi = {"vai sud", "prendi lanterna", "vai nord", "vai est", "posa lanterna", "prendi chiave", "prendi lanterna", "vai ovest", "vai nord"};
-		IOSimulator IO = new IOSimulator(Comandi);
-		DiaDia Test = new DiaDia(IO);
-		Test.gioca();
-		
-		assertTrue(Test.getPartita().getGiocatore().getBorsa().hasAttrezzo("chiave"));
-		assertEquals(Test.getPartita().getLabirinto().getStanzaCorrente().getNome(),"Biblioteca");
-	}
-	
-	@Test
-	void testStanzaMagica() {
-		String []Comandi = {"vai sud", "prendi lanterna", "vai ovest","posa lanterna","prendi lanterna","posa lanterna","prendi lanterna", "posa lanterna","prendi lanterna", "posa lanterna"};
-		IOSimulator IO = new IOSimulator(Comandi);
-		DiaDia Test = new DiaDia(IO);
-		Test.gioca();
-		
+    @BeforeEach
+    void setUp() {
+        labirinto = new LabirintoBuilder()
+            .addStanzaIniziale("Atrio").addAttrezzo("osso", 1)
+            .addStanzaBuia("Aula N11", "lanterna").addAttrezzo("chiave", 1)
+            .addStanza("Aula N10").addAttrezzo("lanterna", 3)
+            .addStanzaMagica("Laboratorio Campus", 1)
+            .addStanzaBloccata("Biblioteca", "sud", "chiave").addStanzaVincente("Biblioteca")
+            .addAdiacenza("Atrio", "Biblioteca", "nord")
+            .addAdiacenza("Atrio", "Aula N11", "est")
+            .addAdiacenza("Atrio", "Aula N10", "sud")
+            .addAdiacenza("Atrio", "Laboratorio Campus", "ovest")
+            .addAdiacenza("Aula N11", "Laboratorio Campus", "est")
+            .addAdiacenza("Aula N11", "Atrio", "ovest")
+            .addAdiacenza("Aula N10", "Atrio", "nord")
+            .addAdiacenza("Aula N10", "Aula N11", "est")
+            .addAdiacenza("Aula N10", "Laboratorio Campus", "ovest")
+            .addAdiacenza("Laboratorio Campus", "Atrio", "est")
+            .addAdiacenza("Laboratorio Campus", "Aula N11", "ovest")
+            .addAdiacenza("Biblioteca", "Atrio", "sud")
+            .getLabirinto();
+    }
 
-		assertEquals(Test.getPartita().getLabirinto().getStanzaCorrente().getNome(),"Laboratorio Campus");
-		assertTrue(Test.getPartita().getLabirinto().getStanzaCorrente().hasAttrezzo("anretnal"));
-	}
-	
-	
-	
-	 
+    @Test
+    void testPartitaFinita() {
+        List<String> comandi = Arrays.asList("fine");
+        IOSimulator io = new IOSimulator(comandi);
+        DiaDia gioco = new DiaDia(io, labirinto);
+        gioco.gioca();
 
+        List<String> output = io.getOutputStrings();
+        assertEquals("Grazie di aver giocato!", output.get(output.size() - 1));
+        assertTrue(gioco.getPartita().isFinita());
+    }
+
+    @Test
+    void testPosaPrendiPartita() {
+        List<String> comandi = Arrays.asList("prendi osso", "vai sud", "prendi lanterna", "vai ovest", "posa lanterna", "posa osso");
+        IOSimulator io = new IOSimulator(comandi);
+        DiaDia gioco = new DiaDia(io, labirinto);
+        gioco.gioca();
+
+        assertTrue(gioco.getPartita().getLabirinto().getStanzaCorrente().hasAttrezzo("osso"));
+        assertTrue(gioco.getPartita().getLabirinto().getStanzaCorrente().hasAttrezzo("lanterna"));
+        assertEquals("Laboratorio Campus", gioco.getPartita().getLabirinto().getStanzaCorrente().getNome());
+    }
+
+    @Test
+    void testPartitaVintaCercandoChiave() {
+        List<String> comandi = Arrays.asList(
+            "vai sud", "prendi lanterna", "vai nord", "vai est", "posa lanterna",
+            "prendi chiave", "prendi lanterna", "vai ovest", "vai nord"
+        );
+        IOSimulator io = new IOSimulator(comandi);
+        DiaDia gioco = new DiaDia(io, labirinto);
+        gioco.gioca();
+
+        assertTrue(gioco.getPartita().getGiocatore().getBorsa().hasAttrezzo("chiave"));
+        assertEquals("Biblioteca", gioco.getPartita().getLabirinto().getStanzaCorrente().getNome());
+    }
+
+    @Test
+    void testStanzaMagica() {
+        List<String> comandi = Arrays.asList(
+            "vai sud", "prendi lanterna", "vai ovest", "posa lanterna", "prendi lanterna",
+            "posa lanterna", "prendi lanterna", "posa lanterna", "prendi lanterna", "posa lanterna"
+        );
+        IOSimulator io = new IOSimulator(comandi);
+        DiaDia gioco = new DiaDia(io, labirinto);
+        gioco.gioca();
+
+        assertEquals("Laboratorio Campus", gioco.getPartita().getLabirinto().getStanzaCorrente().getNome());
+        assertTrue(gioco.getPartita().getLabirinto().getStanzaCorrente().hasAttrezzo("anretnal"));
+    }
 }
-
-
-

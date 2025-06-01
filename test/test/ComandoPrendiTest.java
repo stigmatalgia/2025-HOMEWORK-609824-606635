@@ -8,6 +8,7 @@ import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.comandi.Comando;
@@ -16,18 +17,19 @@ import it.uniroma3.diadia.comandi.ComandoPrendi;
 class ComandoPrendiTest {
 
     private Partita partita;
-    private Comando comando;
+    private ComandoPrendi comando;
     private IO io;
     private Stanza stanza;
 
     @BeforeEach
     void setUp() {
-        stanza = new Stanza("Atrio");
-        Labirinto labirinto = new Labirinto();
-        labirinto.setStanzaIniziale(stanza);
-        labirinto.setStanzaCorrente(stanza);
-        partita = new Partita();
-        partita.setLabirinto(labirinto);
+    	 Labirinto labuilder = new LabirintoBuilder()
+ 				.addStanzaIniziale("LabCampusOne")
+ 				.addStanzaVincente("Biblioteca")
+ 				.addAdiacenza("LabCampusOne", "Biblioteca", "ovest")
+ 				.getLabirinto(); 
+         stanza = labuilder.getStanzaIniziale();
+ 		partita = new Partita(labuilder);
 
         comando = new ComandoPrendi();
         io = new IOConsole();

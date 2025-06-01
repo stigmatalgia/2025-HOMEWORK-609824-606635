@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.comandi.Comando;
@@ -15,11 +17,16 @@ import it.uniroma3.diadia.comandi.ComandoVai;
 public class ComandoVaiTest {
 
 	Partita Partita;
-	Comando Comando = null;
+	ComandoVai Comando = null;
 	IO IO;
 	@BeforeEach
 	void setUp() {
-		Partita = new Partita();
+		Labirinto labuilder = new LabirintoBuilder()
+				.addStanzaIniziale("LabCampusOne")
+				.addStanzaVincente("Biblioteca")
+				.addAdiacenza("LabCampusOne", "Biblioteca", "ovest")
+				.getLabirinto(); 
+		Partita = new Partita(labuilder);
 		Comando = new ComandoVai();
 		IO =new IOConsole();
 	}
@@ -34,7 +41,7 @@ public class ComandoVaiTest {
 	
 	@Test
 	void testVai() {
-		Comando.setParametro("nord");
+		Comando.setParametro("ovest");
 		Comando.esegui(this.Partita, IO);
 		assertNotEquals(this.Partita.getLabirinto().getStanzaCorrente(),this.Partita.getLabirinto().getStanzaIniziale());
 	}
