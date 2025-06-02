@@ -20,7 +20,7 @@ public class ComandoPosa extends AbstractComando implements Comando {
 	public void esegui(Partita partita, IO IO) {
 		Attrezzo attrezzoDaPosare = partita.getGiocatore().getBorsa().removeAttrezzo(this.attrezzo);
         if (attrezzoDaPosare != null) {
-            partita.getLabirinto().getStanzaCorrente().addAttrezzo(attrezzoDaPosare);
+            partita.getStanzaCorrente().addAttrezzo(attrezzoDaPosare);
             IO.mostraMessaggio("Hai posato: " + attrezzoDaPosare.getNome());
         } else {
         	IO.mostraMessaggio("Non hai questo attrezzo nella borsa.");

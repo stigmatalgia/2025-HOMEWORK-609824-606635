@@ -5,7 +5,6 @@ import java.util.Map;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class Labirinto {
-	private Stanza stanzaCorrente;
 	private Stanza stanzaVincente;
 	private Stanza stanzaIniziale;
 	private Map<String,Stanza> struttura = new HashMap<>();
@@ -20,14 +19,6 @@ public class Labirinto {
 
 	public Stanza getStanzaVincente() {
 		return this.stanzaVincente;
-	}
-
-	public void setStanzaCorrente(Stanza stanzaCorrente) {
-		this.stanzaCorrente = stanzaCorrente;
-	}
-
-	public Stanza getStanzaCorrente() {
-		return this.stanzaCorrente;
 	}
 
 	public void setStanzaVincente(Stanza stanzaVincente) {

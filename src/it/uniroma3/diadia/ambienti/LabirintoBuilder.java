@@ -20,7 +20,6 @@ public class LabirintoBuilder {
             s = this.labirinto.getStruttura().get(nomeStanza);
         }
         this.labirinto.setStanzaIniziale(s);
-        this.labirinto.setStanzaCorrente(s);
         this.ultimaAggiunta = s;
         return this;
     }

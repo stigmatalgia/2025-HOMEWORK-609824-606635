@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
@@ -12,6 +13,7 @@ import it.uniroma3.diadia.ambienti.Stanza;
 public class LabirintoTest {
 
     private Labirinto labirinto;
+    private Partita partita;
 
     @BeforeEach
     public void setUp() {
@@ -32,7 +34,7 @@ public class LabirintoTest {
 
     @Test
     public void testStanzeIniziali() {
-        Stanza atrio = labirinto.getStanzaCorrente();
+        Stanza atrio = partita.getStanzaCorrente();
         assertNotNull(atrio);
         assertEquals("Atrio", atrio.getNome());
 
@@ -43,7 +45,7 @@ public class LabirintoTest {
 
     @Test
     public void testConnessioniStanze() {
-        Stanza atrio = labirinto.getStanzaCorrente();
+        Stanza atrio = partita.getStanzaCorrente();
         assertNotNull(atrio.getStanzaAdiacente("nord"));
         assertEquals("Biblioteca", atrio.getStanzaAdiacente("nord").getNome());
 
@@ -59,7 +61,7 @@ public class LabirintoTest {
 
     @Test
     public void testAttrezziNelleStanze() {
-        Stanza atrio = labirinto.getStanzaCorrente();
+        Stanza atrio = partita.getStanzaCorrente();
         assertTrue(atrio.hasAttrezzo("osso"));
 
         Stanza aulaN10 = atrio.getStanzaAdiacente("sud");

@@ -22,15 +22,15 @@ public class ComandoVai extends AbstractComando implements Comando{
 			return;
 		}
 		Stanza prossimaStanza = null;
-		prossimaStanza = partita.getLabirinto().getStanzaCorrente().getStanzaAdiacente(direzione);
+		prossimaStanza = partita.getStanzaCorrente().getStanzaAdiacente(direzione);
 		if (prossimaStanza == null)
 			IO.mostraMessaggio("Direzione non valida");
 		else {
-			partita.getLabirinto().setStanzaCorrente(prossimaStanza);
+			partita.setStanzaCorrente(prossimaStanza);
 			int cfu = partita.getGiocatore().getCfu();
 			partita.getGiocatore().setCfu(--cfu);
 			if((partita.getGiocatore().getCfu() <= 0) && (prossimaStanza != partita.getLabirinto().getStanzaVincente())){ partita.setFinita();}
-			IO.mostraMessaggio(partita.getLabirinto().getStanzaCorrente().getDescrizione());
+			IO.mostraMessaggio(partita.getStanzaCorrente().getDescrizione());
 		}
 	}
 

@@ -11,10 +11,11 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import it.uniroma3.diadia.ConfigReader;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class Borsa {
-    public static final int DEFAULT_PESO_MAX_BORSA = 10;
+    public static final int DEFAULT_PESO_MAX_BORSA = ConfigReader.leggiValore("DEFAULT_PESO_MAX_BORSA");
     
     private Map<String, Attrezzo> attrezzi;
     private int pesoMax;

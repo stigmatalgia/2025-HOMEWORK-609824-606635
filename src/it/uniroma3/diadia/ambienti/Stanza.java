@@ -3,6 +3,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.uniroma3.diadia.ConfigReader;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.personaggi.AbstractPersonaggio;
 
@@ -18,8 +19,8 @@ import it.uniroma3.diadia.personaggi.AbstractPersonaggio;
  */
 public class Stanza {
     
-    static final private int NUMERO_MASSIMO_DIREZIONI = 4;
-    
+    static final private int NUMERO_MASSIMO_DIREZIONI = ConfigReader.leggiValore("NUMERO_MASSIMO_DIREZIONI");
+	private static final int NUMERO_MASSIMO_ATTREZZI = ConfigReader.leggiValore("NUMERO_MASSIMO_ATTREZZI");
     private String nome;
     
     private Map<String,Attrezzo> attrezzi;
@@ -50,6 +51,7 @@ public class Stanza {
      */ 
     public void impostaStanzaAdiacente(String direzione, Stanza stanza) {
         this.stanzeAdiacenti.put(direzione, stanza);
+        this.numeroStanzeAdiacenti++;
     }
  
     /**
@@ -100,8 +102,11 @@ public class Stanza {
      * @return true se aggiunto, false se pieno.
      */
     public boolean addAttrezzo(Attrezzo attrezzo) {
+    	if(this.attrezzi.size() >= NUMERO_MASSIMO_ATTREZZI) {
     	this.attrezzi.put(attrezzo.getNome(),attrezzo);
-    	return this.attrezzi.get(attrezzo.getNome()) != null;
+    	return this.attrezzi.get(attrezzo.getNome()) != null;}
+    	else
+    		return false;
     }
 
     /**

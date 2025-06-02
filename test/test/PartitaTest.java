@@ -43,7 +43,7 @@ public class PartitaTest {
     public void testPartitaVinta() {
         // Imposto la stanza vincente anche come corrente
         Stanza uscita = labirinto.getStanzaVincente();
-        labirinto.setStanzaCorrente(uscita);
+        partita.setStanzaCorrente(uscita);
 
         assertTrue(partita.vinta(), "La partita dovrebbe risultare vinta quando il giocatore è nella stanza vincente");
         assertTrue(partita.isFinita(), "La partita dovrebbe risultare finita se è vinta");

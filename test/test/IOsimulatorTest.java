@@ -58,9 +58,9 @@ class IOsimulatorTest {
         DiaDia gioco = new DiaDia(io, labirinto);
         gioco.gioca();
 
-        assertTrue(gioco.getPartita().getLabirinto().getStanzaCorrente().hasAttrezzo("osso"));
-        assertTrue(gioco.getPartita().getLabirinto().getStanzaCorrente().hasAttrezzo("lanterna"));
-        assertEquals("Laboratorio Campus", gioco.getPartita().getLabirinto().getStanzaCorrente().getNome());
+        assertTrue(gioco.getPartita().getStanzaCorrente().hasAttrezzo("osso"));
+        assertTrue(gioco.getPartita().getStanzaCorrente().hasAttrezzo("lanterna"));
+        assertEquals("Laboratorio Campus", gioco.getPartita().getStanzaCorrente().getNome());
     }
 
     @Test
@@ -74,7 +74,7 @@ class IOsimulatorTest {
         gioco.gioca();
 
         assertTrue(gioco.getPartita().getGiocatore().getBorsa().hasAttrezzo("chiave"));
-        assertEquals("Biblioteca", gioco.getPartita().getLabirinto().getStanzaCorrente().getNome());
+        assertEquals("Biblioteca", gioco.getPartita().getStanzaCorrente().getNome());
     }
 
     @Test
@@ -87,7 +87,7 @@ class IOsimulatorTest {
         DiaDia gioco = new DiaDia(io, labirinto);
         gioco.gioca();
 
-        assertEquals("Laboratorio Campus", gioco.getPartita().getLabirinto().getStanzaCorrente().getNome());
-        assertTrue(gioco.getPartita().getLabirinto().getStanzaCorrente().hasAttrezzo("anretnal"));
+        assertEquals("Laboratorio Campus", gioco.getPartita().getStanzaCorrente().getNome());
+        assertTrue(gioco.getPartita().getStanzaCorrente().hasAttrezzo("anretnal"));
     }
 }

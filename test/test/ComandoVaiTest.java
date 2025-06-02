@@ -36,14 +36,14 @@ public class ComandoVaiTest {
 	void testVaiFallisce() {
 		Comando.setParametro("sopra");
 		Comando.esegui(this.Partita, IO);
-		assertEquals(this.Partita.getLabirinto().getStanzaCorrente(),this.Partita.getLabirinto().getStanzaIniziale());
+		assertEquals(this.Partita.getStanzaCorrente(),this.Partita.getLabirinto().getStanzaIniziale());
 	}
 	
 	@Test
 	void testVai() {
 		Comando.setParametro("ovest");
 		Comando.esegui(this.Partita, IO);
-		assertNotEquals(this.Partita.getLabirinto().getStanzaCorrente(),this.Partita.getLabirinto().getStanzaIniziale());
+		assertNotEquals(this.Partita.getStanzaCorrente(),this.Partita.getLabirinto().getStanzaIniziale());
 	}
 
 }

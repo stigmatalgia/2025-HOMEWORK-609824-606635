@@ -1,6 +1,7 @@
 package it.uniroma3.diadia.personaggi;
 
 import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.ambienti.StanzaMagica;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class Mago extends AbstractPersonaggio {
@@ -19,7 +20,7 @@ public class Mago extends AbstractPersonaggio {
 	public String agisci(Partita partita) {
 		String msg;
 		if (this.attrezzo!=null) {
-			partita.getLabirinto().getStanzaCorrente().addAttrezzo(this.attrezzo);
+			partita.getStanzaCorrente().addAttrezzo(this.attrezzo);
 			this.attrezzo = null;
 			msg = MESSAGGIO_DONO;
 		}
@@ -27,5 +28,21 @@ public class Mago extends AbstractPersonaggio {
 			msg = MESSAGGIO_SCUSE;
 		}
 		return msg;
+	}
+	
+	private Attrezzo modificaAttrezzo(Attrezzo attrezzo) {
+		StringBuilder nomeInvertito;
+		int pesoX2 = attrezzo.getPeso() / 2;
+		nomeInvertito = new StringBuilder(attrezzo.getNome());
+		nomeInvertito = nomeInvertito.reverse();
+		attrezzo = new Attrezzo(nomeInvertito.toString(),
+				pesoX2);
+		return attrezzo;
+	}
+	
+	@Override
+	public String riceviRegalo(Attrezzo attrezzo, Partita partita) {
+		partita.getGiocatore().getBorsa().addAttrezzo(this.modificaAttrezzo(attrezzo));
+		return MESSAGGIO_DONO;
 	}
 }

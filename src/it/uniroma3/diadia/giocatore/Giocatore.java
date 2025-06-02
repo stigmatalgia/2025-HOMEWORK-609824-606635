@@ -1,7 +1,9 @@
 package it.uniroma3.diadia.giocatore;
 
+import it.uniroma3.diadia.ConfigReader;
+
 public class Giocatore {
-	static final private int CFU_INIZIALI = 20;
+	static final private int CFU_INIZIALI = ConfigReader.leggiValore("CFU_INIZIALI");
 	private int cfu;
 	private Borsa borsa = new Borsa();
 	

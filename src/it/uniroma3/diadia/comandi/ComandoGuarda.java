@@ -10,7 +10,7 @@ public class ComandoGuarda extends AbstractComando implements Comando{
 
 	@Override
 	public void esegui(Partita partita, IO IO) {
-		IO.mostraMessaggio(partita.getLabirinto().getStanzaCorrente().getDescrizione()+"\nCFU rimasti:" + partita.getGiocatore().getCfu() + "");
+		IO.mostraMessaggio(partita.getStanzaCorrente().getDescrizione()+"\nCFU rimasti:" + partita.getGiocatore().getCfu() + "");
 	}
 	
 	@Override
