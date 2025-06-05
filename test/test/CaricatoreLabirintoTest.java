@@ -7,6 +7,7 @@ import java.io.StringReader;
 import org.junit.jupiter.api.Test;
 
 import it.uniroma3.diadia.CaricatoreLabirinto;
+import it.uniroma3.diadia.ambienti.Direzione;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 public class CaricatoreLabirintoTest {
@@ -53,7 +54,7 @@ public class CaricatoreLabirintoTest {
 
 		Stanza salotto = caricatore.getStanzaIniziale();
 		assertEquals("salotto", salotto.getNome());
-		assertEquals("cucina", salotto.getStanzaAdiacente("nord").getNome());
+		assertEquals("cucina", salotto.getStanzaAdiacente(Direzione.NORD).getNome());
 		assertEquals("cucina", caricatore.getStanzaVincente().getNome());
 	}
 
@@ -75,12 +76,12 @@ public class CaricatoreLabirintoTest {
 		caricatore.carica();
 
 		Stanza ingresso = caricatore.getStanzaIniziale();
-		assertEquals("salone", ingresso.getStanzaAdiacente("est").getNome());
+		assertEquals("salone", ingresso.getStanzaAdiacente(Direzione.EST).getNome());
 
-		Stanza salone = ingresso.getStanzaAdiacente("est");
+		Stanza salone = ingresso.getStanzaAdiacente(Direzione.EST);
 		assertNotNull(salone.getAttrezzo("chiave"));
 
-		Stanza camera = salone.getStanzaAdiacente("nord");
+		Stanza camera = salone.getStanzaAdiacente(Direzione.NORD);
 		assertNotNull(camera.getAttrezzo("libro"));
 		assertEquals(camera, caricatore.getStanzaVincente());
 	}

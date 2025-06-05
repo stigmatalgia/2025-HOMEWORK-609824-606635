@@ -15,14 +15,14 @@ public class ComandoSaluta extends AbstractComando implements Comando{
 	public void esegui(Partita partita, IO IO) {
 		AbstractPersonaggio personaggio = partita.getStanzaCorrente().getPersonaggio();
 		if (personaggio!=null) {
-			personaggio.saluta();
+			IO.mostraMessaggio(personaggio.saluta());
 
 		} else IO.mostraMessaggio(MESSAGGIO_CON_CHI);
 	}
 	
 	@Override
 	public String getNome() {
-		return "Interagisci";
+		return "Saluta";
 	}
 	
 	public String getMessaggio() {

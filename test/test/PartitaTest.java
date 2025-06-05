@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.ambienti.Direzione;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 public class PartitaTest {
@@ -18,11 +18,10 @@ public class PartitaTest {
     @BeforeEach
     public void setUp() {
         // Creo un labirinto minimo con stanza iniziale e stanza vincente
-        LabirintoBuilder builder = new LabirintoBuilder();
-        this.labirinto = builder
+        this.labirinto = Labirinto.newBuilder()
             .addStanzaIniziale("Atrio")
             .addStanzaVincente("Uscita")
-            .addAdiacenza("Atrio", "Uscita", "nord")
+            .addAdiacenza("Atrio", "Uscita", Direzione.NORD)
             .getLabirinto();
 
         this.partita = new Partita(this.labirinto);

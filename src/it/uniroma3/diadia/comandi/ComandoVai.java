@@ -2,17 +2,22 @@ package it.uniroma3.diadia.comandi;
 
 import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.ambienti.Direzione;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 public class ComandoVai extends AbstractComando implements Comando{
-	private String direzione;
+	private Direzione direzione;
 	
 	public ComandoVai() {
 	}
 	
 	@Override
 	public void setParametro(String parametro) {
-		this.direzione = parametro; 
+		try {
+	        this.direzione = Direzione.fromString(parametro);
+	    } catch (IllegalArgumentException e) {
+	        this.direzione = null;
+	    }
 	}
 	
 	@Override
@@ -41,7 +46,7 @@ public class ComandoVai extends AbstractComando implements Comando{
 
 	@Override
 	public String getParametro() {
-		return this.direzione;
+		return this.direzione.toString();
 	}
 	
 	

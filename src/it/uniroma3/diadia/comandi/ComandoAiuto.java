@@ -4,7 +4,7 @@ import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
 
 public class ComandoAiuto extends AbstractComando implements Comando{
-	static final private String[] elencoComandi = {"vai", "aiuto", "fine", "prendi", "posa", "guarda"};
+	static final private String[] elencoComandi = {"vai", "aiuto", "fine", "prendi", "posa", "guarda", "interagisci", "regala"};
 	
 	public ComandoAiuto() {
 	}

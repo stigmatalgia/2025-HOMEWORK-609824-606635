@@ -26,7 +26,7 @@ public class Stanza {
     private Map<String,Attrezzo> attrezzi;
     private int numeroAttrezzi;
     
-    protected Map<String,Stanza> stanzeAdiacenti;
+    protected Map<Direzione,Stanza> stanzeAdiacenti;
     private int numeroStanzeAdiacenti;
     private AbstractPersonaggio personaggio;
 
@@ -40,7 +40,7 @@ public class Stanza {
         this.nome = nome;
         this.numeroStanzeAdiacenti = 0;
         this.numeroAttrezzi = 0;
-        this.stanzeAdiacenti = new HashMap<String,Stanza>();
+        this.stanzeAdiacenti = new HashMap<Direzione,Stanza>();
         this.attrezzi = new HashMap<String,Attrezzo>();
     }
 
@@ -49,7 +49,7 @@ public class Stanza {
      * @param direzione direzione in cui sarà posta la stanza adiacente.
      * @param stanza stanza adiacente nella direzione indicata.
      */ 
-    public void impostaStanzaAdiacente(String direzione, Stanza stanza) {
+    public void impostaStanzaAdiacente(Direzione direzione, Stanza stanza) {
         this.stanzeAdiacenti.put(direzione, stanza);
         this.numeroStanzeAdiacenti++;
     }
@@ -59,7 +59,7 @@ public class Stanza {
      * @param direzione la direzione.
      * @return la stanza adiacente, o null se non esiste.
      */
-    public Stanza getStanzaAdiacente(String direzione) {
+    public Stanza getStanzaAdiacente(Direzione direzione) {
     	return this.stanzeAdiacenti.get(direzione);
     }
 
@@ -102,7 +102,7 @@ public class Stanza {
      * @return true se aggiunto, false se pieno.
      */
     public boolean addAttrezzo(Attrezzo attrezzo) {
-    	if(this.attrezzi.size() >= NUMERO_MASSIMO_ATTREZZI) {
+    	if(this.attrezzi.size() <= NUMERO_MASSIMO_ATTREZZI) {
     	this.attrezzi.put(attrezzo.getNome(),attrezzo);
     	return this.attrezzi.get(attrezzo.getNome()) != null;}
     	else
@@ -142,7 +142,7 @@ public class Stanza {
      * Restituisce le direzioni disponibili. 
      * @return array di stringhe.
      */
-    public Collection<String> getDirezioni() {
+    public Collection<Direzione> getDirezioni() {
        return this.stanzeAdiacenti.keySet();
     }
 
@@ -194,7 +194,7 @@ public class Stanza {
         StringBuilder sb = new StringBuilder();
         sb.append(this.nome);
         sb.append("\nUscite: ");
-        for (String dir : this.getDirezioni()) {
+        for (Direzione dir : this.getDirezioni()) {
             if (dir != null)
                 sb.append(" ").append(dir);
         }

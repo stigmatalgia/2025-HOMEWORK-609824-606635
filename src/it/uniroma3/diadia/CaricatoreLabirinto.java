@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import it.uniroma3.diadia.ambienti.*;
+import it.uniroma3.diadia.ambienti.Labirinto.LabirintoBuilder;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.personaggi.Cane;
 import it.uniroma3.diadia.personaggi.Mago;
@@ -30,7 +31,7 @@ public class CaricatoreLabirinto {
     public CaricatoreLabirinto(Reader reader) {
         this.nome2stanza = new HashMap<>();
         this.reader       = new LineNumberReader(reader);
-        this.builder      = new LabirintoBuilder();
+        this.builder      = Labirinto.newBuilder();
     }
 
     public void carica() throws FormatoFileNonValidoException {
@@ -96,7 +97,7 @@ public class CaricatoreLabirinto {
             for (String spec : separaStringheAlleVirgole(righeBloccate)) {
                 String[] tokens = spec.trim().split("\\s+");
                 check(tokens.length == 3, "Formato stanza bloccata errato. Atteso: <nomeStanza> <direzioneBloccata> <oggettoChiave>");
-                builder.addStanzaBloccata(tokens[0], tokens[1], tokens[2]);
+                builder.addStanzaBloccata(tokens[0], Direzione.fromString(tokens[1]), tokens[2]);
             }
         }
 
@@ -147,7 +148,7 @@ public class CaricatoreLabirinto {
                 check(sc.hasNext(), msgTerminazionePrecoce("nome stanza di partenza"));
                 String stanzaDa = sc.next().trim();
                 check(sc.hasNext(), msgTerminazionePrecoce("direzione"));
-                String direzione = sc.next().trim();
+                Direzione direzione = Direzione.fromString(sc.next().trim());
                 check(sc.hasNext(), msgTerminazionePrecoce("nome stanza di destinazione"));
                 String stanzaA = sc.next().trim();
                 check(isStanzaValida(stanzaDa), "Stanza di partenza sconosciuta " + direzione);
@@ -189,9 +190,16 @@ public class CaricatoreLabirinto {
                     this.nome2stanza.get(stanzaDiPers).setPersonaggio(s);
                     break;
                 case "cane":
-                    check(tokens.length == 5, "Formato cane errato. Atteso: Cane <nome> <presentazione> <stanza> <cibo>");
+                    check(tokens.length == 7, "Formato cane errato. Atteso: Cane <nome> <presentazione> <stanza> <cibo> <attrezzo> <peso>");
                     String cibo = tokens[4];
-                    Cane c = new Cane(nomePers, presentazione, cibo);
+                    String attrCane = tokens[5];
+                    int pesoAttrCane;
+                    try {
+                    	pesoAttrCane = Integer.parseInt(tokens[6]);
+                    } catch (NumberFormatException e) {
+                        throw new FormatoFileNonValidoException("Peso attrezzo non valido per mago: " + tokens[5]);
+                    }
+                    Cane c = new Cane(nomePers, presentazione, cibo, new Attrezzo(attrCane, pesoAttrCane));
                     this.nome2stanza.get(stanzaDiPers).setPersonaggio(c);
                     break;
                 default:
@@ -235,5 +243,8 @@ public class CaricatoreLabirinto {
 
     public Map<String, Stanza> getListaStanze() {
         return this.builder.getListaStanze();
+    }
+    public LabirintoBuilder getBuilder() {
+    	return this.builder;
     }
 }

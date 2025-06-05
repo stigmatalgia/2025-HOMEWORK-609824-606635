@@ -2,9 +2,6 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import it.uniroma3.diadia.giocatore.Borsa;

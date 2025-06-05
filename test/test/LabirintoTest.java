@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.ambienti.Direzione;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 public class LabirintoTest {
@@ -17,7 +17,7 @@ public class LabirintoTest {
 
     @BeforeEach
     public void setUp() {
-        labirinto = new LabirintoBuilder()
+        labirinto = Labirinto.newBuilder()
                 .addStanzaIniziale("Atrio")
                 .addAttrezzo("osso", 1)
                 .addStanzaVincente("Biblioteca")
@@ -25,11 +25,12 @@ public class LabirintoTest {
                 .addStanza("Aula N10")
                 .addAttrezzo("lanterna", 3)
                 .addStanza("Laboratorio Campus")
-                .addAdiacenza("Atrio", "Biblioteca", "nord")
-                .addAdiacenza("Atrio", "Aula N11", "est")
-                .addAdiacenza("Atrio", "Aula N10", "sud")
-                .addAdiacenza("Atrio", "Laboratorio Campus", "ovest")
+                .addAdiacenza("Atrio", "Biblioteca", Direzione.NORD)
+                .addAdiacenza("Atrio", "Aula N11", Direzione.EST)
+                .addAdiacenza("Atrio", "Aula N10", Direzione.SUD)
+                .addAdiacenza("Atrio", "Laboratorio Campus", Direzione.OVEST)
                 .getLabirinto();
+        this.partita = new Partita(this.labirinto);
     }
 
     @Test
@@ -46,17 +47,17 @@ public class LabirintoTest {
     @Test
     public void testConnessioniStanze() {
         Stanza atrio = partita.getStanzaCorrente();
-        assertNotNull(atrio.getStanzaAdiacente("nord"));
-        assertEquals("Biblioteca", atrio.getStanzaAdiacente("nord").getNome());
+        assertNotNull(atrio.getStanzaAdiacente(Direzione.OVEST));
+        assertEquals("Biblioteca", atrio.getStanzaAdiacente(Direzione.NORD).getNome());
 
-        assertNotNull(atrio.getStanzaAdiacente("est"));
-        assertEquals("Aula N11", atrio.getStanzaAdiacente("est").getNome());
+        assertNotNull(atrio.getStanzaAdiacente(Direzione.EST));
+        assertEquals("Aula N11", atrio.getStanzaAdiacente(Direzione.EST).getNome());
 
-        assertNotNull(atrio.getStanzaAdiacente("sud"));
-        assertEquals("Aula N10", atrio.getStanzaAdiacente("sud").getNome());
+        assertNotNull(atrio.getStanzaAdiacente(Direzione.SUD));
+        assertEquals("Aula N10", atrio.getStanzaAdiacente(Direzione.SUD).getNome());
 
-        assertNotNull(atrio.getStanzaAdiacente("ovest"));
-        assertEquals("Laboratorio Campus", atrio.getStanzaAdiacente("ovest").getNome());
+        assertNotNull(atrio.getStanzaAdiacente(Direzione.OVEST));
+        assertEquals("Laboratorio Campus", atrio.getStanzaAdiacente(Direzione.OVEST).getNome());
     }
 
     @Test
@@ -64,7 +65,7 @@ public class LabirintoTest {
         Stanza atrio = partita.getStanzaCorrente();
         assertTrue(atrio.hasAttrezzo("osso"));
 
-        Stanza aulaN10 = atrio.getStanzaAdiacente("sud");
+        Stanza aulaN10 = atrio.getStanzaAdiacente(Direzione.SUD);
         assertNotNull(aulaN10);
         assertTrue(aulaN10.hasAttrezzo("lanterna"));
     }
