@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.Partita;
+import it.uniroma3.diadia.ambienti.Direzione;
 import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
@@ -21,13 +22,14 @@ class ComandoPosaTest {
 
     @BeforeEach
     void setUp() {
-        stanza = new Stanza("Aula");
-        Labirinto labirinto = new Labirinto();
-        labirinto.setStanzaIniziale(stanza);
-        labirinto.setStanzaCorrente(stanza);
 
-        partita = new Partita();
-        partita.setLabirinto(labirinto);
+        Labirinto labuilder = Labirinto.newBuilder()
+				.addStanzaIniziale("LabCampusOne")
+				.addStanzaVincente("Biblioteca")
+				.addAdiacenza("LabCampusOne", "Biblioteca", Direzione.OVEST)
+				.getLabirinto(); 
+        stanza = labuilder.getStanzaIniziale();
+		partita = new Partita(labuilder);
 
         io = new IOConsole();
         comando = new ComandoPosa();

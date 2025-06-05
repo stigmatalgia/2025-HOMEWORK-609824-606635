@@ -2,6 +2,8 @@ package test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import it.uniroma3.diadia.ambienti.Direzione;
 import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
@@ -17,8 +19,8 @@ public class StanzaTest {
     @Test
     public void testImpostaERecuperaStanzaAdiacente() {
         Stanza laboratorio = new Stanza("Laboratorio");
-        stanza.impostaStanzaAdiacente("nord", laboratorio);
-        assertEquals(laboratorio, stanza.getStanzaAdiacente("nord"));
+        stanza.impostaStanzaAdiacente(Direzione.NORD, laboratorio);
+        assertEquals(laboratorio, stanza.getStanzaAdiacente(Direzione.NORD));
     }
 
     @Test

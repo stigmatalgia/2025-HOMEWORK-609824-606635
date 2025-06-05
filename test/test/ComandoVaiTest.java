@@ -7,19 +7,23 @@ import org.junit.jupiter.api.Test;
 import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.Partita;
-import it.uniroma3.diadia.ambienti.Stanza;
-import it.uniroma3.diadia.attrezzi.Attrezzo;
-import it.uniroma3.diadia.comandi.Comando;
+import it.uniroma3.diadia.ambienti.Direzione;
+import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.comandi.ComandoVai;
 
 public class ComandoVaiTest {
 
 	Partita Partita;
-	Comando Comando = null;
+	ComandoVai Comando = null;
 	IO IO;
 	@BeforeEach
 	void setUp() {
-		Partita = new Partita();
+		Labirinto labuilder = Labirinto.newBuilder()
+				.addStanzaIniziale("LabCampusOne")
+				.addStanzaVincente("Biblioteca")
+				.addAdiacenza("LabCampusOne", "Biblioteca", Direzione.OVEST)
+				.getLabirinto(); 
+		Partita = new Partita(labuilder);
 		Comando = new ComandoVai();
 		IO =new IOConsole();
 	}
@@ -29,14 +33,14 @@ public class ComandoVaiTest {
 	void testVaiFallisce() {
 		Comando.setParametro("sopra");
 		Comando.esegui(this.Partita, IO);
-		assertEquals(this.Partita.getLabirinto().getStanzaCorrente(),this.Partita.getLabirinto().getStanzaIniziale());
+		assertEquals(this.Partita.getStanzaCorrente(),this.Partita.getLabirinto().getStanzaIniziale());
 	}
 	
 	@Test
 	void testVai() {
-		Comando.setParametro("nord");
+		Comando.setParametro("ovest");
 		Comando.esegui(this.Partita, IO);
-		assertNotEquals(this.Partita.getLabirinto().getStanzaCorrente(),this.Partita.getLabirinto().getStanzaIniziale());
+		assertNotEquals(this.Partita.getStanzaCorrente(),this.Partita.getLabirinto().getStanzaIniziale());
 	}
 
 }

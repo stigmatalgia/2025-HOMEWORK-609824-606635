@@ -1,0 +1,9 @@
+Stanze: Atrio, AulaN10, Segreteria
+Stanze buie: AulaN11 lanterna
+Stanze magiche: LaboratorioCampus 1
+Stanze bloccate: Biblioteca NORD chiave
+Inizio: Atrio
+Vincente: Segreteria
+Attrezzi: osso 1 Atrio, chiave 1 AulaN11, lanterna 3 AulaN10
+Uscite: Atrio NORD Biblioteca, Atrio EST AulaN11, Atrio SUD AulaN10, Atrio OVEST LaboratorioCampus, AulaN11 EST LaboratorioCampus, AulaN11 OVEST Atrio, AulaN10 NORD Atrio, AulaN10 EST AulaN11, AulaN10 OVEST LaboratorioCampus, LaboratorioCampus EST Atrio, LaboratorioCampus OVEST AulaN11, Biblioteca SUD Atrio, Biblioteca NORD Segreteria
+Personaggi: Mago Merlino Merlino2 Atrio Catalizzatore 3, Strega Morgana Morgana2 AulaN10, Cane Laika Laika2 Biblioteca osso Bastone 2

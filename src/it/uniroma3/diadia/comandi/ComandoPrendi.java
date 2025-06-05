@@ -4,7 +4,7 @@ import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-public class ComandoPrendi implements Comando{
+public class ComandoPrendi extends AbstractComando implements Comando {
 	private String attrezzo; 
 	
 	public ComandoPrendi() {
@@ -18,10 +18,10 @@ public class ComandoPrendi implements Comando{
 
 	@Override  
 	public void esegui(Partita partita, IO IO) {
-		Attrezzo attrezzoDaPrendere = partita.getLabirinto().getStanzaCorrente().getAttrezzo(this.attrezzo);
+		Attrezzo attrezzoDaPrendere = partita.getStanzaCorrente().getAttrezzo(this.attrezzo);
         if (attrezzoDaPrendere != null) {
             if (partita.getGiocatore().getBorsa().addAttrezzo(attrezzoDaPrendere)) {
-                partita.getLabirinto().getStanzaCorrente().removeAttrezzo(attrezzoDaPrendere);
+                partita.getStanzaCorrente().removeAttrezzo(attrezzoDaPrendere);
                 IO.mostraMessaggio("Hai preso: " + attrezzoDaPrendere.getNome());
             } else {
             	IO.mostraMessaggio("La borsa è piena!");

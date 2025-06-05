@@ -1,11 +1,11 @@
 package it.uniroma3.diadia.ambienti;
 
+import it.uniroma3.diadia.ConfigReader;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 class StanzaMagicaProtected extends StanzaProtected {
 
-	final static protected int SOGLIA_MAGICA_DEFAULT = 3;
-	protected static final int NUMERO_MASSIMO_ATTREZZI = 10;
+	final static protected int SOGLIA_MAGICA_DEFAULT = ConfigReader.leggiValore("SOGLIA_MAGICA_DEFAULT");
 	protected int contatoreAttrezziPosati;
 	protected int sogliaMagica;
  

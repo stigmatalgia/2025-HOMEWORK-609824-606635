@@ -1,39 +1,39 @@
 package it.uniroma3.diadia;
 
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IOSimulator implements IO {
-    private String[] inputStrings;
-    private String[] outputStrings;
+    private ArrayList<String> inputStrings;
+    private ArrayList<String> outputStrings;
     private int inputIndex;
     private int outputIndex;
 
-    public IOSimulator(String[] inputStrings) {
-        this.inputStrings = inputStrings;
-        // aggiungo 3 perche' +1 e' il messaggio di benvenuto +1 e' il messaggio di vittoria o fine cfu e +1 e' il messaggio di fine aggiunto da iosimulator
-        this.outputStrings = new String[(inputStrings.length)+3];
+    public IOSimulator(List<String> inputStrings) {
+        this.inputStrings = new ArrayList<>(inputStrings);
+        this.outputStrings = new ArrayList<>();         
         this.inputIndex = 0;
         this.outputIndex = 0;
     }
-
+    
     @Override
     public void mostraMessaggio(String messaggio) {
-        outputStrings[outputIndex++] = messaggio;
+        outputStrings.add(messaggio);
     }
 
     @Override
     public String leggiRiga() {
-        if (inputIndex < inputStrings.length) {
-            return inputStrings[inputIndex++];
+        if (inputIndex < inputStrings.size()) {
+            return inputStrings.get(inputIndex++);
         }
         return "fine";
     }
 
-    public String[] getInputStrings() {
+    public ArrayList<String> getInputStrings() {
         return inputStrings;
     }
 
-    public String[] getOutputStrings() {
+    public ArrayList<String> getOutputStrings() {
         return outputStrings;
     }
 }

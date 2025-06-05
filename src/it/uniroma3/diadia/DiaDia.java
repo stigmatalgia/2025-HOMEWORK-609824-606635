@@ -1,7 +1,13 @@
 package it.uniroma3.diadia;
 
+import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.comandi.Comando;
-import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
+import it.uniroma3.diadia.comandi.FabbricaDiComandiRiflessiva;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+import it.uniroma3.diadia.ambienti.Direzione;
 
 /**
  * Classe principale di diadia, un semplice gioco di ruolo ambientato al dia.0.0..0 
@@ -29,10 +35,10 @@ public class DiaDia {
 
 	private Partita partita;
 	private IO IO;
- 
-	public DiaDia(IO IO) {
+
+	public DiaDia(IO IO, Labirinto labirinto) {
 		this.IO = IO; 
-		this.partita = new Partita();
+		this.partita = new Partita(labirinto);
 	}
 
 	public void gioca() {
@@ -55,9 +61,9 @@ public class DiaDia {
 	private boolean processaIstruzione(String istruzione) {
 		//System.out.println("A".repeat(8192));
 		Comando comandoDaEseguire;
-		FabbricaDiComandiFisarmonica factory = new FabbricaDiComandiFisarmonica(IO, partita);
+		FabbricaDiComandiRiflessiva factory = new FabbricaDiComandiRiflessiva();
 
-		comandoDaEseguire = factory.costruisciComando(istruzione);
+		comandoDaEseguire = (Comando) factory.costruisciComando(istruzione);
 		comandoDaEseguire.esegui(this.partita,IO);
 		if(this.partita.vinta())
 			IO.mostraMessaggio("Hai vinto!");
@@ -66,9 +72,22 @@ public class DiaDia {
 		return this.partita.isFinita();
 	}
 
-	public static void main(String[] argc) {
-		IO io = new IOConsole();
-		DiaDia gioco = new DiaDia(io);
-		gioco.gioca();
+	public static void main(String[] args) {
+	    try (IOConsole io = new IOConsole();
+	         FileReader fileReader = new FileReader("Labirinto.txt")) {
+
+	        CaricatoreLabirinto cl = new CaricatoreLabirinto(fileReader);
+	        cl.carica();
+	        Labirinto labirinto = cl.getBuilder().getLabirinto();
+
+	        DiaDia gioco = new DiaDia(io, labirinto);
+	        gioco.gioca();
+
+	    } catch (FormatoFileNonValidoException e) {
+	        System.err.println("Errore nel formato del file di labirinto: " + e.getMessage());
+	    } catch (IOException e) {
+	        System.err.println("Errore di I/O nella lettura del file: " + e.getMessage());
+	    }
 	}
+
 }
